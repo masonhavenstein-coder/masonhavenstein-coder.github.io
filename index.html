@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Mason Havenstein Wellness. Holistic lifestyle coach on Sydney's Northern Beaches helping tradies, desk workers and gym rats get their energy back.">
+<title>Mason Havenstein Wellness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one phone-first column, read top to bottom like a trail log: hero → story → what I work on → who it's for → training → next step */
+:root{
+  --bg:#EDF0EA; --surface:#F8FAF6; --fg:#16211B; --muted:#56635B; --line:#CBD3CA;
+  --gum:#1F4D3A; --gum-ink:#F3F7F2; --ochre:#B9822A;
+  --display:"Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1612; --surface:#17211B; --fg:#E4EAE3; --muted:#9AA79E; --line:#2C3A31;
+  --gum:#86C0A0; --gum-ink:#0F1612; --ochre:#E2B456; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0F1612; --surface:#17211B; --fg:#E4EAE3; --muted:#9AA79E; --line:#2C3A31;
+  --gum:#86C0A0; --gum-ink:#0F1612; --ochre:#E2B456; color-scheme:dark }
+
+*{box-sizing:border-box} html,body{margin:0} [hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+section{display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2{font-family:var(--display);font-weight:900;line-height:.95;margin:0;text-wrap:balance}
+h1{font-size:clamp(54px,15vw,92px);text-transform:uppercase}
+h1 em{font-style:normal;color:var(--ochre)}
+h2{font-size:clamp(34px,9vw,46px);text-transform:uppercase}
+p{margin:0;max-width:62ch}
+.lede{font-size:20px;line-height:1.5}
+.muted{color:var(--muted)}
+.actions{display:flex;flex-direction:column;gap:12px}
+.btn{border-radius:999px;padding:18px 26px;min-height:56px;font:700 17px/1 var(--body);text-decoration:none;
+  display:inline-flex;align-items:center;justify-content:center;background:var(--gum);color:var(--gum-ink)}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--fg);border:1.5px solid var(--line)}
+.btn:focus-visible{outline:3px solid var(--ochre);outline-offset:3px}
+.who{display:flex;gap:8px;flex-wrap:wrap}
+.who span{border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+
+.story{border-left:3px solid var(--ochre);padding-left:18px;display:flex;flex-direction:column;gap:14px}
+.pull{font-family:var(--display);font-weight:800;font-size:clamp(28px,7.5vw,38px);line-height:1.05;text-transform:uppercase;color:var(--gum)}
+
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:460px){.pillars{grid-template-columns:1fr}}
+.pillar{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.pillar strong{font-family:var(--display);font-size:26px;font-weight:800;text-transform:uppercase;line-height:1}
+.pillar p{font-size:15px;color:var(--muted)}
+
+.list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
+.list li{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);min-width:0}
+.list li:first-child{border-top:1px solid var(--line)}
+.list b{font-weight:700}
+.list span{color:var(--muted);text-align:right;font-size:15px}
+
+.cta{background:var(--gum);color:var(--gum-ink);border-radius:22px;padding:28px 22px;display:flex;flex-direction:column;gap:14px}
+.cta h2{color:var(--gum-ink)}
+.cta .btn{background:var(--gum-ink);color:var(--gum)}
+.cta .btn.ghost{background:transparent;color:var(--gum-ink);border-color:currentColor}
+.foot{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:4px}
+</style>
+
+</head><body>
+<main class="wrap">
+
+  <section style="gap:22px">
+    <span class="eyebrow">Mason · Holistic lifestyle coach · Northern Beaches, Sydney</span>
+    <h1>Get your <em>energy</em> back</h1>
+    <p class="lede">I help people who are tired all the time work out why, and fix it with food, sleep, movement and how they handle stress. No gimmicks.</p>
+    <div class="who" aria-label="Who I work with"><span>Tradies</span><span>Desk workers</span><span>Gym rats</span></div>
+    <div class="actions">
+      <a class="btn" href="quiz/">Take the free energy quiz →</a>
+      <a class="btn ghost" href="https://ig.me/m/mason_havenstein_wellness" target="_blank" rel="noopener">Message me on Instagram</a>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">My story</span>
+    <h2>I was that tired guy</h2>
+    <div class="story">
+      <p>For years I worked on the tools as a roofer, a sparky and a butcher. Eight to ten hour days, and I was always tired and always chasing energy.</p>
+      <p>I tried the extremes. I did a full year of carnivore. It felt great at the start, and by the end I felt terrible. That's when I worked out that no single diet fixes it. You have to look at the whole picture.</p>
+      <p class="pull">Your energy problem is never just one thing.</p>
+      <p>So I spent four years studying holistic health under the Paul Chek system, and I'm now training as an Integrative Health Practitioner with Dr Stephen Cabral. Everything I teach is stuff I've tested on myself first.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">What we work on</span>
+    <h2>The four things draining you</h2>
+    <div class="pillars">
+      <div class="pillar"><strong>Food</strong><p>What you eat, when you eat and how well you digest it. Real food, not another diet.</p></div>
+      <div class="pillar"><strong>Rhythm</strong><p>Sleep, sunlight and daily timing. Your body runs on a clock, and most of us fight it.</p></div>
+      <div class="pillar"><strong>Toxins</strong><p>Everything your body has to clear every day. When the barrel overflows, energy is the first thing to go.</p></div>
+      <div class="pillar"><strong>Mindset</strong><p>Stress, emotions and the stuff you carry around. It drains you more than any workout.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Training</span>
+    <h2>Where it comes from</h2>
+    <ul class="list">
+      <li><b>CHEK Holistic Lifestyle Coach</b><span>Levels 1 &amp; 2</span></li>
+      <li><b>Integrative Health Practitioner</b><span>In training, Dr Stephen Cabral</span></li>
+      <li><b>On the tools</b><span>Years roofing, sparkying and butchering</span></li>
+    </ul>
+  </section>
+
+  <section class="cta">
+    <span class="eyebrow" style="color:var(--gum-ink);opacity:.8">Start here</span>
+    <h2>Find out why you're flat</h2>
+    <p>The quiz takes 60 seconds. It tells you your Ayurvedic energy type and gives you three things to change this week.</p>
+    <a class="btn" href="quiz/">Take the quiz →</a>
+    <a class="btn ghost" href="https://www.instagram.com/mason_havenstein_wellness/" target="_blank" rel="noopener">Follow @mason_havenstein_wellness</a>
+  </section>
+
+  <footer class="foot">
+    <span>Mason Havenstein Wellness · Mona Vale, Northern Beaches</span>
+    <span>General wellness education, not medical advice.</span>
+  </footer>
+</main>
+</body></html>
