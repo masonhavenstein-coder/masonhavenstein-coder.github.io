@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mason's Quiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one narrow column, one screen at a time: intro → 8 quick questions → wired meter + bedtime tips + DM */
+:root{
+  --bg:#EDF0EA; --surface:#F8FAF6; --fg:#16211B; --muted:#56635B; --line:#CBD3CA;
+  --gum:#1F4D3A; --gum-ink:#F3F7F2; --ochre:#B9822A;
+  --hot:#C0502F; --mid:#B9822A; --calm:#4F6F9A;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1612; --surface:#17211B; --fg:#E4EAE3; --muted:#9AA79E; --line:#2C3A31;
+  --gum:#86C0A0; --gum-ink:#0F1612; --ochre:#E2B456;
+  --hot:#EC8A66; --mid:#E2B456; --calm:#93B2DA; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0F1612; --surface:#17211B; --fg:#E4EAE3; --muted:#9AA79E; --line:#2C3A31;
+  --gum:#86C0A0; --gum-ink:#0F1612; --ochre:#E2B456;
+  --hot:#EC8A66; --mid:#E2B456; --calm:#93B2DA; color-scheme:dark }
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:calc(28px + env(safe-area-inset-top,0px));padding-bottom:calc(48px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:540px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+.brand{font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:.06em;text-transform:uppercase;color:var(--gum)}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2{font-family:var(--display);font-weight:900;line-height:.95;margin:0;text-wrap:balance}
+h1{font-size:clamp(54px,16vw,90px);text-transform:uppercase}
+h1 em{font-style:normal;color:var(--hot)}
+h2{font-size:clamp(30px,8.5vw,44px)}
+p{margin:0}
+.lede{font-size:19px;max-width:34ch}
+.small{font-size:14px;color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:12px}
+.btn{appearance:none;border:0;cursor:pointer;font:700 17px/1 var(--body);border-radius:999px;padding:18px 26px;min-height:56px;
+  background:var(--gum);color:var(--gum-ink);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--fg);border:1.5px solid var(--line)}
+.btn:focus-visible,.opt:focus-visible{outline:3px solid var(--ochre);outline-offset:3px}
+.pedals{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pedal{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.pedal strong{font-family:var(--display);font-size:22px;font-weight:800;text-transform:uppercase;line-height:1.05}
+.pedal small{font-size:13px;color:var(--muted);line-height:1.35}
+
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ochre);transition:width .3s ease}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.back{background:none;border:0;color:var(--muted);font:600 15px var(--body);cursor:pointer;padding:8px 0}
+.back:disabled{visibility:hidden}
+.opt{appearance:none;text-align:left;width:100%;cursor:pointer;background:var(--surface);color:var(--fg);
+  border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;font:500 17px/1.4 var(--body);transition:border-color .15s,transform .1s}
+.opt:hover{border-color:var(--gum)}
+.opt:active{transform:scale(.99)}
+.opt.picked{border-color:var(--gum);box-shadow:inset 0 0 0 1.5px var(--gum)}
+
+.type{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(58px,18vw,100px);line-height:.88;margin:0}
+.meter{display:flex;flex-direction:column;gap:8px}
+.meter .track{position:relative;height:14px;border-radius:14px;background:linear-gradient(90deg,var(--calm),var(--mid),var(--hot))}
+.meter .dot{position:absolute;top:50%;width:26px;height:26px;border-radius:50%;background:var(--surface);border:4px solid var(--fg);transform:translate(-50%,-50%)}
+.meter .ends{display:flex;justify-content:space-between;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.block{display:flex;flex-direction:column;gap:12px}
+.block h3{margin:0;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+ol.tips{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:t}
+ol.tips li{counter-increment:t;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+ol.tips li::before{content:counter(t);font-family:var(--display);font-weight:900;font-size:30px;line-height:1;color:var(--ochre)}
+ol.tips strong{display:block}
+ol.tips span span{color:var(--muted);font-size:15px}
+.cta{background:var(--gum);color:var(--gum-ink);border-radius:20px;padding:24px 22px;display:flex;flex-direction:column;gap:14px}
+.cta h2{font-size:clamp(28px,7.5vw,38px)}
+.cta .btn{background:var(--gum-ink);color:var(--gum)}
+.cta .word{font-family:var(--display);font-weight:900;font-size:1.2em;letter-spacing:.04em}
+.cta .small{color:var(--gum-ink);opacity:.8}
+.foot{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap" id="app" aria-live="polite">
+  <section class="stack" style="gap:22px">
+    <span class="brand">Mason's Quiz</span>
+    <span class="eyebrow">8 questions · under a minute</span>
+    <h1>Are you <em>wired?</em></h1>
+    <p class="lede">Cooked all day, wide awake the second your head hits the pillow? Find out if your body's stuck in go mode.</p>
+    <div class="pedals">
+      <div class="pedal"><strong style="color:var(--hot)">Sympathetic</strong><small>The gas pedal. Fight or flight. Go, push, get it done.</small></div>
+      <div class="pedal"><strong style="color:var(--calm)">Parasympathetic</strong><small>The brake. Rest and digest. Where you recover and sleep deep.</small></div>
+    </div>
+    <button class="btn" id="start" type="button">Start →</button>
+    <p class="foot">@mason_havenstein_wellness</p>
+  </section>
+</main>
+
+<script>
+const IG = "mason_havenstein_wellness";
+// each answer scores 2 (wired), 1 (in between) or 0 (calm)
+const Q = [
+  {q:"Your head hits the pillow. You…", a:[["Wide awake, mind racing",2],["Takes a while, but I get there",1],["Out in 10 minutes",0]]},
+  {q:"Do you wake up around 2 or 3am for no reason?", a:[["Most nights",2],["Sometimes",1],["Rarely",0]]},
+  {q:"Coffees or energy drinks a day?", a:[["Three or more",2],["One or two",1],["None, or one in the morning",0]]},
+  {q:"How often do you skip meals or forget to eat?", a:[["All the time",2],["A couple of times a week",1],["Hardly ever",0]]},
+  {q:"Check your breathing right now. It's…", a:[["Short, up in my chest",2],["Not sure, never noticed",1],["Slow and into my belly",0]]},
+  {q:"Your jaw and shoulders are usually…", a:[["Tight. I clench and hunch",2],["Tight when I'm stressed",1],["Pretty loose",0]]},
+  {q:"Last thing you do before sleep?", a:[["Scroll my phone in bed",2],["TV, then straight to bed",1],["Phone's away, I wind down",0]]},
+  {q:"You get a quiet 10 minutes. You…", a:[["Can't sit still, I find something to do",2],["Grab my phone",1],["Actually relax",0]]}
+];
+const MAX = Q.length*2;
+
+const R = [
+  {min:11, name:"Wired", color:"var(--hot)", word:"WIRED",
+    line:"Gas pedal stuck down.",
+    what:"Your body's stuck in fight or flight. It thinks it's under threat all day, so it runs on adrenaline and never drops into parasympathetic, rest and digest. That's why you're cooked all day and wide awake at night. More caffeine is just petrol on the fire."},
+  {min:6, name:"Half wired", color:"var(--mid)", word:"WIRED",
+    line:"Foot's hovering over the gas.",
+    what:"You can switch off, but it takes you too long, and some nights you don't get there at all. A few busy weeks or a few extra cans and you'll tip into full wired. Good news: you're close, and the tips below will make a fast difference."},
+  {min:0, name:"Switched off", color:"var(--calm)", word:"CALM",
+    line:"You can find the brake.",
+    what:"Your nervous system switches on when you need it and switches off when you don't. That's the goal. Protect it. Stress, bad sleep and too much caffeine can tip anyone over, so keep the habits below in your back pocket."}
+];
+
+const TIPS = [
+  ["Last coffee or can before 12pm","Caffeine hangs around for 8 to 10 hours. Your 2pm can is still in your system at midnight."],
+  ["Eat a proper dinner","Protein, some carbs and warm food. Going to bed hungry keeps your body on alert."],
+  ["Dim the lights after sunset","Lamps instead of big overhead lights. Bright light tells your brain it's still daytime."],
+  ["Phone out of the bedroom","Charge it in the kitchen. Scrolling in bed keeps you switched on."],
+  ["Hot shower, then a cool room","The drop in body temperature afterwards is a signal to sleep."],
+  ["Longer breath out than in","In for 4 through the nose, out for 8 through the mouth. Do it for 5 minutes lying in bed. The long exhale is your brake pedal."],
+  ["Brain dump on paper","If your head's racing, write tomorrow's jobs down so you don't have to hold onto them."]
+];
+
+const app = document.getElementById("app");
+let step = 0, picks = [];
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function renderQ(){
+  const item = Q[step];
+  app.innerHTML = `
+    <section class="stack" style="gap:20px">
+      <span class="brand">Mason's Quiz</span>
+      <div class="qhead">
+        <button class="back" type="button" id="back" ${step===0?"disabled":""}>← Back</button>
+        <span class="eyebrow">${step+1} / ${Q.length}</span>
+      </div>
+      <div class="bar" aria-hidden="true"><i style="width:${(step/Q.length)*100}%"></i></div>
+      <h2>${esc(item.q)}</h2>
+      <div class="stack" role="group" aria-label="Answers">
+        ${item.a.map((o,i)=>`<button class="opt${picks[step]===i?" picked":""}" type="button" data-i="${i}">${esc(o[0])}</button>`).join("")}
+      </div>
+    </section>`;
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    picks[step]=+b.dataset.i; b.classList.add("picked");
+    setTimeout(()=>{ step++; step<Q.length?renderQ():renderResult(); window.scrollTo(0,0) },180);
+  });
+  document.getElementById("back").onclick=()=>{ if(step>0){step--;renderQ()} };
+}
+
+function renderResult(){
+  const score = picks.reduce((t,p,i)=>t+Q[i].a[p][1],0);
+  const r = R.find(x=>score>=x.min);
+  const pct = Math.max(4,Math.min(96,score/MAX*100));
+  app.innerHTML = `
+    <section class="stack" style="gap:28px">
+      <span class="brand">Mason's Quiz</span>
+      <div class="stack" style="gap:10px">
+        <span class="eyebrow">Your result</span>
+        <p class="type" style="color:${r.color}">${r.name}</p>
+        <h2>${r.line}</h2>
+      </div>
+      <div class="meter" aria-label="Wired score ${score} out of ${MAX}">
+        <div class="track"><span class="dot" style="left:${pct}%"></span></div>
+        <div class="ends"><span>Parasympathetic</span><span>${score} / ${MAX}</span><span>Wired</span></div>
+      </div>
+      <p>${r.what}</p>
+      <div class="block">
+        <h3>How to hit the brake before bed</h3>
+        <ol class="tips">${TIPS.map(t=>`<li><span><strong>${t[0]}</strong><span>${t[1]}</span></span></li>`).join("")}</ol>
+        <p class="small">Screenshot this and try three of them tonight.</p>
+      </div>
+      <div class="cta">
+        <h2>Want a hand switching off?</h2>
+        <p>DM me <span class="word">${r.word}</span> on Instagram and I'll send you the three things I'd fix first.</p>
+        <a class="btn" href="https://ig.me/m/${IG}" target="_blank" rel="noopener">Message me on Instagram →</a>
+        <p class="small">@${IG}</p>
+      </div>
+      <button class="btn ghost" type="button" id="again">Take it again</button>
+      <p class="foot">General wellness education, not medical advice. If you're struggling to sleep or exhausted all the time, see your GP.</p>
+    </section>`;
+  document.getElementById("again").onclick=()=>{step=0;picks=[];renderQ();window.scrollTo(0,0)};
+}
+
+document.getElementById("start").onclick=()=>{renderQ();window.scrollTo(0,0)};
+</script>
+</body>
+</html>
